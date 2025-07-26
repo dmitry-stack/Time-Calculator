@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  
+  <meta charset="UTF-8" />
+  <title>Time Calculator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
+    :root {
+      --bg-color: #f4f4f4;
+      --text-color: #333;
+      --card-color: #fff;
+      --accent: #4caf50;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg-color: #121212;
+        --text-color: #f4f4f4;
+        --card-color: #1e1e1e;
+        --accent: #81c784;
+      }
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .calculator {
+      background-color: var(--card-color);
+      padding: 30px 20px;
+      border-radius: 15px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      max-width: 400px;
+      width: 90%;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .time-lable{
+        font-weight: bold;
+        font-size: 1.2em;
+    }
+
+    .time-group {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .time-group input {
+      width: 40%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    
+     .buttons {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .buttons button {
+      flex: 1;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 10px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
+    }
+
+    .add {
+      background-color: var(--neutral);
+    }
+
+    .add:hover {
+      background-color: #388e3c;
+    }
+
+    .sub {
+       background-color: var(--neutral);
+    }
+
+    .sub:hover {
+      background-color: #b71c1c;
+    }
+
+    .clear {
+      background-color: var(--neutral);
+    }
+
+    .clear:hover {
+      background-color: #555;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 1.2em;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 6px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+    <div class="calculator">
+    <h1  >
+        Time Calculator
+    </h1>
+
+    <label class ="time-lable"> Time 1 </label>
+    <div class="time-group">
+        
+        <input type="number" id="hours1" placeholder="Hours" min="0" />
+        <label> : </label>
+        <input type="number" id="minutes1" placeholder="Minutes" min="0" max="59" />
+    </div>
+        <label class="time-lable"> Time 2</label>
+    <div class="time-group">
+        
+        <input type="number" id="hours2" placeholder="Hours" min="0" />
+        <label> : </label>
+        <input type="number" id="minutes2" placeholder="Minutes" min="0" max="59" />
+    </div>
+  <div class="buttons">
+      <button class="add" onclick="calculate('add')">Add</button>
+      <button class="sub" onclick="calculate('sub')">Substract</button>
+      <button class="clear" onclick="clearFields()">Clear</button>
+    </div>
+   <div id="result"></div>
+</div>
+<script>
+    function pad(n) {
+      return n.toString().padStart(2, '0');
+    }
+
+     function calculate(action) {
+        
+      let h1 = parseInt(document.getElementById("hours1").value) || 0;
+      let m1 = parseInt(document.getElementById("minutes1").value) || 0;
+      let h2 = parseInt(document.getElementById("hours2").value) || 0;
+      let m2 = parseInt(document.getElementById("minutes2").value) || 0;
+
+      let total1 = h1 * 60 + m1;
+      let total2 = h2 * 60 + m2;
+      let resultMinutes = 0;
+
+      if (action === 'add') {
+        resultMinutes = total1 + total2;
+      } else if (action === 'sub') {
+        resultMinutes = total1 - total2;
+        if (resultMinutes < 0) resultMinutes = 0;
+      }
+
+      let days = Math.floor(resultMinutes / (24 * 60));
+      let remaining = resultMinutes % (24 * 60);
+      let hours = Math.floor(remaining / 60);
+      let minutes = remaining % 60;
+
+      let time = `${pad(hours)}:${pad(minutes)}`;
+      let resultText = days > 0
+        ? `Result: ${days} d. ${time}`
+        : `Result: ${time}`;
+
+      document.getElementById("result").textContent = resultText;
+    }
+
+    function clearFields() {
+      document.getElementById("hours1").value = '';
+      document.getElementById("minutes1").value = '';
+      document.getElementById("hours2").value = '';
+      document.getElementById("minutes2").value = '';
+      document.getElementById("result").textContent = '';
+    }
+    window.onload = function() {
+    const now = new Date();
+    document.getElementById("hours1").value = now.getHours();
+    document.getElementById("minutes1").value = now.getMinutes();
+};
+</script>
+
+
+
+</body>
+
+
+
+</html>
