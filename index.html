@@ -54,13 +54,17 @@ body.dark {
       padding: 30px 20px;
       border-radius: 15px;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-      max-width: 400px;
-      width: 90%;
+     
+      width: 500px;
+      height: 600px;
     }
 
     h1 {
       text-align: center;
       margin-bottom: 25px;
+      font-weight: bold;
+      
+      
     }
 
     .time-lable{
@@ -70,16 +74,29 @@ body.dark {
 
     .time-group {
       display: flex;
-      justify-content: space-between;
+      justify-content: center;
       margin-bottom: 15px;
+      gap:10px;
     }
+    .time-block {
+display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 110px; 
+  gap: 16px; 
+  margin-left: -20px;
+
+}
 
     .time-group input {
-      width: 40%;
-      padding: 10px;
+      width: 180px;
+      height: 30px;
+      padding: 5px;
       font-size: 16px;
+      
       border: 1px solid #ccc;
-      border-radius: 8px;
+      border-radius: 10px;
+      
     }
     
      .buttons {
@@ -92,7 +109,7 @@ body.dark {
     .buttons button {
       flex: 1;
       padding: 12px;
-      font-size: 16px;
+      font-size: 18px;
       border: none;
       border-radius: 10px;
       color: var(--button-text);
@@ -129,7 +146,7 @@ body.dark {
 
     #result {
       margin-top: 20px;
-      font-size: 1.2em;
+      font-size: 24px;
       text-align: center;
       font-weight: bold;
     }
@@ -152,7 +169,14 @@ body.dark {
   margin: 0;
   font-size: 1.5em;
 }
-
+.time-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px; 
+  flex-wrap: wrap;
+  margin-bottom: 15px;
+}
 .theme-toggle {
   border: none;
   background: var(--neutral);
@@ -161,8 +185,23 @@ body.dark {
   border-radius: 8px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1em;
+  font-size: 24px;
   transition: background-color 0.2s ease;
+}
+
+.swap-times{
+    border: none;
+  background: var(--neutral);
+  color: white;
+  padding: 8px 14px;
+  font-size: 28px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  margin-top: -10px;
+  margin-bottom: 5px;
+  margin-left: 50px;
+ 
 }
 
 .set-current {
@@ -173,7 +212,7 @@ body.dark {
   border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
-  font-size: 1em;
+  font-size: 24px;
   transition: background-color 0.2s ease;
 }
 .button-group {
@@ -193,33 +232,41 @@ body.dark {
     <h1>Time Calculator</h1>
     <div class="button-group">
     <button class="theme-toggle" onclick="toggleTheme()">🌙</button>
-    <button class="set-current" onclick="setCurrent()">🕒</button>
+    
     </div>
       </div>
     
     
-    
-    <label class ="time-lable"> Time 1 </label>
-    <div class="time-group">
-        
-        <input type="number" id="hours1" placeholder="Hours" min="0" />
-        <label> : </label>
-        <input type="number" id="minutes1" placeholder="Minutes" min="0" max="59"  oninput="normalizeTime('hours1', 'minutes1')" />
-    </div>
-        <label class="time-lable"> Time 2</label>
-    <div class="time-group">
-        
-         <input type="number" id="hours2" placeholder="Hours" min="0" />
-        <label> : </label>
-        <input type="number" id="minutes2" placeholder="Minutes" min="0" max="59"  oninput="normalizeTime('hours2', 'minutes2')" />
-    </div>
+   <div class="time-block">
+  <div class="time-group">
+    <button class="set-current" onclick="setCurrent(1)">🕒</button>
+    <input type="number" id="hours1" placeholder="Hours" min="0" />
+    <label> : </label>
+    <input type="number" id="minutes1" placeholder="Minutes" min="0" max="59"
+      oninput="normalizeTime('hours1', 'minutes1')" />
+  </div>
+
+  <button class="swap-times" onclick="swapTimes()">🔁</button>
+
+  <div class="time-group">
+    <button class="set-current" onclick="setCurrent(2)">🕒</button>
+    <input type="number" id="hours2" placeholder="Hours" min="0" />
+    <label> : </label>
+    <input type="number" id="minutes2" placeholder="Minutes" min="0" max="59"
+      oninput="normalizeTime('hours2', 'minutes2')" />
+  </div>
+</div>
+
   <div class="buttons">
       <button class="add" onclick="calculate('add')">Add</button>
-      <button class="sub" onclick="calculate('sub')">Substract</button>
+      <button class="sub" onclick="calculate('sub')">Subtract</button>
       <button class="clear" onclick="clearFields()">Clear</button>
     </div>
    <div id="result"></div>
 </div>
+
+
+
 <script>
     function pad(n) {
       return n.toString().padStart(2, '0');
@@ -258,9 +305,9 @@ m2 = m2 % 60;
   let resultText = '';
 
   if (days !== 0) {
-    resultText = `Result: ${isNegative ? '-' : ''}${days} d. ${time}`;
+    resultText = ` ${isNegative ? '-' : ''}${days} d. ${time}`;
   } else {
-    resultText = `Result: ${isNegative ? '-' : ''}${time}`;
+    resultText = ` ${isNegative ? '-' : ''}${time}`;
   }
 
   document.getElementById("result").textContent = resultText;
@@ -279,7 +326,7 @@ function normalizeTime(hourId, minuteId) {
     mInput.value = minutes;
   }
 }
-function pad(num) {
+ function pad(num) {
   return num.toString().padStart(2, '0');
     }
 
@@ -321,16 +368,33 @@ function pad(num) {
       document.getElementById("minutes2").value = '';
       document.getElementById("result").textContent = '';
     }
-    function setCurrent(){
+    function setCurrent(number){
         const now = new Date();
+        if(number == 1){
         document.getElementById("hours1").value = now.getHours();
         document.getElementById("minutes1").value = now.getMinutes();
+        }
+        if(number == 2){
+             document.getElementById("hours2").value = now.getHours();
+        document.getElementById("minutes2").value = now.getMinutes();
+        }
     }
     window.onload = function() {
     const now = new Date();
     document.getElementById("hours1").value = now.getHours();
     document.getElementById("minutes1").value = now.getMinutes();
-};
+    };
+
+    function swapTimes(){
+       const h1 = document.getElementById('hours1');
+  const m1 = document.getElementById('minutes1');
+  const h2 = document.getElementById('hours2');
+  const m2 = document.getElementById('minutes2');
+
+  [h1.value, h2.value] = [h2.value, h1.value];
+  [m1.value, m2.value] = [m2.value, m1.value];
+    }
+
 document.addEventListener("DOMContentLoaded", applyStoredTheme);
 </script>
 
